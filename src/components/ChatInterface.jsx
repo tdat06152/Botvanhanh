@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Bot, User, Sparkles } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { askBot } from '../lib/gemini';
 
 function ChatInterface() {
+    const navigate = useNavigate();
     const [messages, setMessages] = useState([
         { role: 'bot', text: 'Xin chào, tôi là Bot hỗ trợ vận hành. Hãy đặt câu hỏi về quy trình làm việc tại bưu cục cho tôi nhé!' }
     ]);
@@ -20,6 +22,14 @@ function ChatInterface() {
 
     const handleSend = async () => {
         if (!input.trim() || isLoading) return;
+
+        // --- CƠ CHẾ MẬT KHẨU ADMIN ---
+        if (input.trim() === 'admin@ghn') {
+            navigate('/admin');
+            return;
+        }
+        // ----------------------------
+
         const userMessage = { role: 'user', text: input };
         setMessages(prev => [...prev, userMessage]);
         setInput('');
@@ -43,7 +53,7 @@ function ChatInterface() {
                     <Bot size={24} color="white" />
                 </div>
                 <div>
-                    <h1 style={{ fontSize: '1.2rem', fontWeight: '700' }}>AI Process Assistant</h1>
+                    <h1 style={{ fontSize: '1.2rem', fontWeight: '700' }}>Trợ Lý Vận Hành GHN</h1>
                     <p style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.5)', fontWeight: '500' }}>READY TO HELP • ROTATING API ACTIVE</p>
                 </div>
             </div>
@@ -52,7 +62,7 @@ function ChatInterface() {
                 {messages.map((msg, i) => (
                     <div key={i} className={`message ${msg.role}`}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                            {msg.role === 'bot' ? <Sparkles size={14} color="#60a5fa" /> : <User size={14} />}
+                            {msg.role === 'bot' ? <Sparkles size={14} color="#00a0fa" /> : <User size={14} />}
                             <span style={{ fontSize: '0.7rem', fontWeight: '700', opacity: 0.7 }}>
                                 {msg.role === 'bot' ? 'ASSISTANT' : 'YOU'}
                             </span>
@@ -60,7 +70,7 @@ function ChatInterface() {
                         <div style={{ fontSize: '0.95rem', lineHeight: '1.5' }}>{msg.text}</div>
                         {msg.sources && msg.sources.length > 0 && (
                             <div className="sources" style={{ marginTop: '10px', padding: '8px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                                <span style={{ fontWeight: '600', color: '#60a5fa' }}>Nguồn:</span> {msg.sources.map(s => s.q).join(', ')}
+                                <span style={{ fontWeight: '600', color: '#00a0fa' }}>Nguồn:</span> {msg.sources.map(s => s.q).join(', ')}
                             </div>
                         )}
                     </div>

@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 
 // CẤU HÌNH GOOGLE SHEET
-const SHEET_ID = '107MTVqHD1vkbGFQ382yb33iiMdkocKzVrFkehN8ok9Y'; // ID từ yêu cầu của bạn
+const SHEET_ID = '10Dxx2PN5udPtsI3YG3PnwgLWTnMOT1h746dxMwvKJqo'; // ID Sheet mới
 const RANGE = 'Answer!A2:E'; // Đọc từ dòng 2 (bỏ header) cột A đến E
 
 // Khởi tạo Auth

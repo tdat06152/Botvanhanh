@@ -1,12 +1,28 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
-import { Bot, Database, MessageSquare, ExternalLink } from 'lucide-react';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
+import { Bot, Database, MessageSquare } from 'lucide-react';
 import ChatInterface from './components/ChatInterface';
 import KnowledgeManager from './KnowledgeManager';
 
 function Navigation() {
     const location = useLocation();
+    const navigate = useNavigate();
     const isAdmin = location.pathname === '/admin';
+
+    const handleAdminClick = (e) => {
+        e.preventDefault(); // Chặn chuyển trang ngay lập tức
+
+        // Nếu đang ở trang Admin rồi thì không làm gì cả
+        if (location.pathname === '/admin') return;
+
+        const pin = window.prompt("🔒 Vui lòng nhập mã PIN quản trị viên:");
+
+        if (pin === "321654") {
+            navigate('/admin');
+        } else if (pin !== null) {
+            alert("⛔ Mã PIN không chính xác!");
+        }
+    };
 
     return (
         <nav style={{
@@ -24,39 +40,46 @@ function Navigation() {
             zIndex: 1000
         }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <div style={{ background: 'var(--primary)', p: '6px', borderRadius: '8px', display: 'flex' }}>
+                <div style={{ background: 'var(--primary)', padding: '6px', borderRadius: '8px', display: 'flex' }}>
                     {isAdmin ? <Database size={20} color="white" /> : <Bot size={20} color="white" />}
                 </div>
                 <span style={{ fontWeight: '700', letterSpacing: '0.5px' }}>
-                    {isAdmin ? 'ADMIN PANEL' : 'PROCESS AI BOT'}
+                    {isAdmin ? 'ADMIN PANEL' : 'TRỢ LÝ VẬN HÀNH GHN'}
                 </span>
             </div>
 
             <div style={{ display: 'flex', gap: '24px' }}>
                 <Link to="/" style={{
-                    color: location.pathname === '/' ? '#60a5fa' : 'white',
+                    color: location.pathname === '/' ? '#00a0fa' : 'white',
                     textDecoration: 'none',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '8px',
                     fontSize: '0.9rem',
                     fontWeight: '600',
-                    transition: 'all 0.2s'
+                    transition: 'all 0.2s',
+                    borderBottom: location.pathname === '/' ? '2px solid #00a0fa' : '2px solid transparent',
+                    paddingBottom: '4px'
                 }}>
                     <MessageSquare size={16} /> AI Chat Link
                 </Link>
-                <Link to="/admin" style={{
-                    color: location.pathname === '/admin' ? '#60a5fa' : 'white',
+
+                {/* Link Admin có bảo mật PIN */}
+                <a href="/admin" onClick={handleAdminClick} style={{
+                    color: location.pathname === '/admin' ? '#ff8a00' : 'white',
                     textDecoration: 'none',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '8px',
                     fontSize: '0.9rem',
                     fontWeight: '600',
-                    transition: 'all 0.2s'
+                    transition: 'all 0.2s',
+                    cursor: 'pointer',
+                    borderBottom: location.pathname === '/admin' ? '2px solid #ff8a00' : '2px solid transparent',
+                    paddingBottom: '4px'
                 }}>
                     <Database size={16} /> Admin Storage Link
-                </Link>
+                </a>
             </div>
         </nav>
     );

@@ -118,6 +118,16 @@ function KnowledgeManager() {
         reader.readAsBinaryString(file);
     };
 
+    const downloadTemplate = () => {
+        const ws = XLSX.utils.json_to_sheet([
+            { 'Câu hỏi': 'GHN là gì?', 'Chủ đề': 'Khái niệm', 'Câu trả lời': 'Giao Hàng Nhanh' },
+            { 'Câu hỏi': 'Quy trình POD', 'Chủ đề': 'Vận hành', 'Câu trả lời': 'Bước 1: Chụp ảnh...' },
+        ]);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Mau_Import");
+        XLSX.writeFile(wb, "Mau_Kien_Thuc_GHN.xlsx");
+    };
+
     const filteredKnowledge = knowledge.filter(item =>
         item.q.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.topic.toLowerCase().includes(searchTerm.toLowerCase())
@@ -127,21 +137,29 @@ function KnowledgeManager() {
         <div className="admin-container" style={{ padding: '40px', maxWidth: '1200px', margin: '0 auto', height: '100vh', overflowY: 'auto', color: 'white' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
                 <div>
-                    <h1 style={{ fontSize: '2rem', marginBottom: '8px', background: 'linear-gradient(to right, #60a5fa, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                        Quản trị Kiến thức RAG
+                    <h1 style={{ fontSize: '2rem', marginBottom: '8px', background: 'linear-gradient(to right, #ff8a00, #fbbf24)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                        Quản trị Trợ lý GHN
                     </h1>
-                    <p style={{ opacity: 0.6 }}>Lưu trữ bền vững & Xoay API Key tự động</p>
+                    <p style={{ opacity: 0.6 }}>Kết nối Google Sheets & Xoay API Key tự động</p>
                 </div>
                 <div style={{ display: 'flex', gap: '12px' }}>
                     <button
                         onClick={runRAGForAll}
                         disabled={isProcessingAll}
-                        style={{ background: '#7c3aed', display: 'flex', alignItems: 'center', gap: '8px' }}
+                        style={{ background: '#00a0fa', display: 'flex', alignItems: 'center', gap: '8px' }}
                     >
                         <Zap size={18} className={isProcessingAll ? 'spinning' : ''} />
                         {isProcessingAll ? 'Đang chạy RAG...' : 'RAG cho tất cả'}
                     </button>
-                    <label style={{ background: '#2563eb', padding: '12px 24px', borderRadius: '12px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '600' }}>
+
+                    <button
+                        onClick={downloadTemplate}
+                        style={{ background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', gap: '8px', border: '1px solid rgba(255,255,255,0.2)' }}
+                    >
+                        <Download size={18} /> Tải mẫu
+                    </button>
+
+                    <label style={{ background: '#ff8a00', padding: '12px 24px', borderRadius: '12px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 'bold' }}>
                         <FileUp size={18} /> Import Excel
                         <input type="file" hidden accept=".xlsx, .xls" onChange={handleImportExcel} />
                     </label>

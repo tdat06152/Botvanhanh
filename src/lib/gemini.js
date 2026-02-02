@@ -34,12 +34,20 @@ function cosineSimilarity(vecA, vecB) {
 }
 
 /**
- * Lấy knowledge từ localStorage hoặc file mặc định
+ * Lấy knowledge từ Backend (Server/Google Sheets) để luôn cập nhật
  */
-function getKnowledge() {
-  const saved = localStorage.getItem('knowledge_base');
-  if (saved) return JSON.parse(saved);
-  return initialKnowledge;
+async function getKnowledge() {
+  try {
+    const res = await fetch('http://localhost:3001/api/knowledge');
+    if (!res.ok) throw new Error('API Error');
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.warn("⚠️ Không gọi được Server, dùng localStorage dự phòng...");
+    const saved = localStorage.getItem('knowledge_base');
+    if (saved) return JSON.parse(saved);
+    return initialKnowledge;
+  }
 }
 
 /**
@@ -76,7 +84,8 @@ export async function computeEmbedding(text) {
 
 async function retrieveContext(query, topK = 3) {
   const queryEmb = await computeEmbedding(query);
-  const kb = getKnowledge();
+  const kb = await getKnowledge();
+
 
   // Chỉ những mục đã có nhúng (embedding) mới được tìm kiếm chính xác
   const scoredKB = kb.map(item => {
@@ -95,7 +104,7 @@ async function retrieveContext(query, topK = 3) {
 export async function askBot(query, history = []) {
   try {
     const hits = await retrieveContext(query);
-    const relevantHits = hits.filter(h => h.score > 0.4);
+    const relevantHits = hits.filter(h => h.score > 0.35);
 
     let context = "Không có thông tin phù hợp.";
     if (relevantHits.length > 0) {
@@ -105,7 +114,7 @@ export async function askBot(query, history = []) {
     return await callWithRetry(async (genAI) => {
       const model = genAI.getGenerativeModel({
         model: CHAT_MODEL,
-        systemInstruction: "Bạn là trợ lý Process Bot. Trả lời dựa trên CONTEXT. Nếu không có, hãy nói chưa có trong tài liệu."
+        systemInstruction: "Bạn là trợ lý hỗ trợ vận hành GHN. Nhiệm vụ của bạn là trả lời câu hỏi dựa trên CONTEXT được cung cấp.\nLƯU Ý QUAN TRỌNG:\n- Nếu CONTEXT có thông tin liên quan (ví dụ: quy trình) nhưng không có định nghĩa chính xác người dùng hỏi, HÃY DÙNG QUY TRÌNH ĐÓ ĐỂ GIẢI THÍCH.\n- Tuyệt đối không được bịa đặt thông tin không có trong CONTEXT.\n- Trình bày câu trả lời RÕ RÀNG, DỄ ĐỌC. Sử dụng gạch đầu dòng (-) hoặc số thứ tự (1. 2. 3.) cho các bước quy trình. Xuống dòng giữa các ý chính."
       });
 
       let formattedHistory = history.map(msg => ({
