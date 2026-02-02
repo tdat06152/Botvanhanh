@@ -11,9 +11,12 @@ function KnowledgeManager() {
     const [editingId, setEditingId] = useState(null);
     const [isProcessingAll, setIsProcessingAll] = useState(false);
 
-    // Load data từ Backend API
+    // Tự động phân luồng: Chạy trên Vercel thì dùng /api/..., chạy Local thì dùng localhost:3001
+    const API_URL = import.meta.env.PROD ? '/api/knowledge' : 'http://localhost:3001/api/knowledge';
+
+    // Load data API
     useEffect(() => {
-        fetch('http://localhost:3001/api/knowledge')
+        fetch(API_URL)
             .then(res => res.json())
             .then(data => {
                 const dataWithId = data.map((item, index) => ({
@@ -26,10 +29,10 @@ function KnowledgeManager() {
             .catch(err => console.error("Lỗi tải data từ server:", err));
     }, []);
 
-    // Sync data lên server mỗi khi knowledge thay đổi
+    // Sync data API
     const syncWithServer = async (data) => {
         try {
-            await fetch('http://localhost:3001/api/knowledge', {
+            await fetch(API_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
@@ -85,7 +88,6 @@ function KnowledgeManager() {
 
         for (const item of pendingItems) {
             await runRAG(item.id);
-            // Đợi một chút để tránh spam API
             await new Promise(r => setTimeout(r, 500));
         }
 

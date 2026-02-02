@@ -33,12 +33,15 @@ function cosineSimilarity(vecA, vecB) {
   return dotProduct / (Math.sqrt(mA) * Math.sqrt(mB));
 }
 
+// Tự động chọn URL API: Gọi Serverless trên Vercel (Prod) hoặc Localhost 3001 (Dev)
+const API_URL = import.meta.env.PROD ? '/api/knowledge' : 'http://localhost:3001/api/knowledge';
+
 /**
  * Lấy knowledge từ Backend (Server/Google Sheets) để luôn cập nhật
  */
 async function getKnowledge() {
   try {
-    const res = await fetch('http://localhost:3001/api/knowledge');
+    const res = await fetch(API_URL);
     if (!res.ok) throw new Error('API Error');
     const data = await res.json();
     return data;
