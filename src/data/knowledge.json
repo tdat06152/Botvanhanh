@@ -1,0 +1,51 @@
+[
+  {
+    "q": "GHN",
+    "topic": "Khái niệm",
+    "a": "Giao Hàng Nhanh",
+    "id": "init-0",
+    "ragStatus": "pending"
+  },
+  {
+    "q": "NVPTTT",
+    "topic": "Khái niệm",
+    "a": "Nhân viên Phát triển thị trường",
+    "id": "init-1",
+    "ragStatus": "pending"
+  },
+  {
+    "q": "NVXL",
+    "topic": "Khái niệm",
+    "a": "Nhân viên xử lý",
+    "id": "init-2",
+    "ragStatus": "pending"
+  },
+  {
+    "q": "POD là gì ?",
+    "topic": "POD",
+    "a": "Là hình ảnh chứng minh quá trình giao nhận hàng hoá, có những POD sau:\n- POD Giao Thành Công (POD GTC)",
+    "id": "init-3",
+    "ragStatus": "pending"
+  },
+  {
+    "q": "Thế nào là POD đúng",
+    "topic": "POD",
+    "a": "POD gồm 3 loại chính:\n1. POD Giao thành công:\nTrường hợp giao trực tiếp người nhận...",
+    "id": "init-4",
+    "ragStatus": "pending"
+  },
+  {
+    "q": "Giao thành công là gì ?",
+    "topic": "Khái niệm",
+    "a": "Giao Thành Công (viết tắt là GTC) là việc Nhân viên Phát triển thị trường giao đơn hàng cho người nhận thành công.",
+    "id": "init-5",
+    "ragStatus": "pending"
+  },
+  {
+    "q": "Quy định về đồng phục của Nhân viên Phát triển thị trường",
+    "topic": "Quy định",
+    "a": "Áo đồng phục và nón của GiaoHangNhanh\nQuần dài tối màu\nGiày bít mũi chân",
+    "id": "init-6",
+    "ragStatus": "pending"
+  }
+]
