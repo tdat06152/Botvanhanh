@@ -43,7 +43,7 @@ function Navigation() {
                 <div style={{ background: 'var(--primary)', padding: '6px', borderRadius: '8px', display: 'flex' }}>
                     {isAdmin ? <Database size={20} color="white" /> : <Bot size={20} color="white" />}
                 </div>
-                <span style={{ fontWeight: '700', letterSpacing: '0.5px' }}>
+                <span style={{ fontWeight: '700', letterSpacing: '0.5px', color: 'white' }}>
                     {isAdmin ? 'ADMIN PANEL' : 'TRỢ LÝ VẬN HÀNH GHN'}
                 </span>
             </div>
@@ -61,10 +61,9 @@ function Navigation() {
                     borderBottom: location.pathname === '/' ? '2px solid #00a0fa' : '2px solid transparent',
                     paddingBottom: '4px'
                 }}>
-                    <MessageSquare size={16} /> AI Chat Link
+                    <MessageSquare size={16} /> AI Chat
                 </Link>
 
-                {/* Link Admin có bảo mật PIN */}
                 <a href="/admin" onClick={handleAdminClick} style={{
                     color: location.pathname === '/admin' ? '#ff8a00' : 'white',
                     textDecoration: 'none',
@@ -78,7 +77,7 @@ function Navigation() {
                     borderBottom: location.pathname === '/admin' ? '2px solid #ff8a00' : '2px solid transparent',
                     paddingBottom: '4px'
                 }}>
-                    <Database size={16} /> Admin Storage Link
+                    <Database size={16} /> Admin Storage
                 </a>
             </div>
         </nav>
@@ -96,6 +95,19 @@ function App() {
                         <Route path="/admin" element={<KnowledgeManager />} />
                     </Routes>
                 </main>
+                <footer style={{
+                    position: 'fixed',
+                    bottom: '12px',
+                    width: '100%',
+                    textAlign: 'center',
+                    fontSize: '0.75rem',
+                    color: 'rgba(255, 255, 255, 0.3)',
+                    letterSpacing: '0.5px',
+                    pointerEvents: 'none',
+                    zIndex: 1000
+                }}>
+                    Sản phẩm được tạo bởi ĐạtTT LnD
+                </footer>
             </div>
         </Router>
     );
