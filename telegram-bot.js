@@ -112,7 +112,7 @@ async function askBot(query) {
 
         const genAI = getGenAI();
         const model = genAI.getGenerativeModel({
-            model: 'gemini-3.1-flash-lite',
+            model: 'gemini-3.1-flash-lite-preview',
             systemInstruction: `Bạn là **BOT VẬN HÀNH**, chuyên gia hỗ trợ nội bộ của bộ phận Vận hành. Bạn phản hồi như một người đồng nghiệp chuyên nghiệp, tận tâm và thấu hiểu.
 
 **PHONG CÁCH CỦA BẠN:**
